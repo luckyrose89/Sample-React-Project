@@ -6,7 +6,8 @@
   "scripts": {
     "format": "prettier --write \"src/**/*.{js,jsx,css,json}\"",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint **/*.{js,jsx} --quiet"
+    "lint": "eslint **/*.{js,jsx} --quiet",
+    "dev": "parcel src/index.html"
   },
   "author": "",
   "license": "ISC",
@@ -16,5 +17,9 @@
     "eslint-plugin-prettier": "^3.0.0",
     "parcel-bundler": "^1.10.2",
     "prettier": "^1.14.3"
+  },
+  "dependencies": {
+    "react": "^16.5.2",
+    "react-dom": "^16.5.2"
   }
 }
