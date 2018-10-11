@@ -9,7 +9,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1 onClick={this.handleClickTitle}>Adopt Me!!</h1>
+        <h1>Adopt Me!!</h1>
         <Pet name="Luna" animal="Dog" breed="Havanese" />
         <Pet name="Coco" animal="Cat" breed="Persian" />
         <Pet name="Deedee" animal="Pig" breed="Mixed" />
@@ -18,4 +18,4 @@ class App extends React.Component {
   }
 }
 
-render(React.createElement(App), document.getElementById("root"));
+render(<App />, document.getElementById("root"));
