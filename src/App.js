@@ -1,21 +1,25 @@
 import React from "react";
-import { render } from "react-dom";
-import Pet from "./Pet";
+import ReactDOM from "react-dom";
+import { Router, Link } from "@reach/router";
+import Results from "./Results";
+import Details from "./Details";
+import SearchParams from "./SearchParams";
 
 class App extends React.Component {
-  handleClickTitle() {
-    alert("You clicked this!!");
-  }
   render() {
     return (
       <div>
-        <h1>Adopt Me!!</h1>
-        <Pet name="Luna" animal="Dog" breed="Havanese" />
-        <Pet name="Coco" animal="Cat" breed="Persian" />
-        <Pet name="Deedee" animal="Pig" breed="Mixed" />
+        <header>
+          <Link to="/">Adopt Me!</Link>
+        </header>
+        <Router>
+          <Results path="/" />
+          <Details path="/details/:id" />
+          <SearchParams path="/search-params" />
+        </Router>
       </div>
     );
   }
 }
 
-render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
