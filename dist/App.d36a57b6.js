@@ -25340,6 +25340,10 @@ exports.default = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
+var _petfinderClient = _interopRequireWildcard(require("petfinder-client"));
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
@@ -25360,6 +25364,11 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+var petfinder = (0, _petfinderClient.default)({
+  key: "6ec4b779266e6c507df36ae116fc1b8f",
+  secret: "5dc99bd735380b5dc8206c2b71f47571"
+});
+
 var SearchParams =
 /*#__PURE__*/
 function (_React$Component) {
@@ -25372,10 +25381,13 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(SearchParams).call(this, props));
     _this.handleLocationChange = _this.handleLocationChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleAnimalChange = _this.handleAnimalChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
+    _this.handleBreedChange = _this.handleBreedChange.bind(_assertThisInitialized(_assertThisInitialized(_this)));
     _this.state = {
       location: "Seattle, WA",
       animal: "",
-      breed: ""
+      breed: "",
+      breeds: []
     };
     return _this;
   }
@@ -25388,18 +25400,82 @@ function (_React$Component) {
       });
     }
   }, {
+    key: "handleAnimalChange",
+    value: function handleAnimalChange(event) {
+      this.setState({
+        animal: event.target.value
+      }, this.getBreeds);
+    }
+  }, {
+    key: "handleBreedChange",
+    value: function handleBreedChange(event) {
+      this.setState({
+        breed: event.target.value
+      });
+    }
+  }, {
+    key: "getBreeds",
+    value: function getBreeds() {
+      var _this2 = this;
+
+      if (this.state.animal) {
+        petfinder.breed.list({
+          animal: this.state.animal
+        }).then(function (data) {
+          if (data.petfinder && data.petfinder.breeds && Array.isArray(data.petfinder.breeds.breed)) {
+            _this2.setState({
+              breeds: data.petfinder.breeds.breed
+            });
+          } else {
+            _this2.setState({
+              breeds: []
+            });
+          }
+        }).catch(console.error);
+      } else {
+        this.setState({
+          breeds: []
+        });
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       return _react.default.createElement("div", {
         className: "search-params"
-      }, _react.default.createElement("label", {
+      }, _react.default.createElement("form", null, _react.default.createElement("label", {
         htmlFor: "location"
       }, "Location", _react.default.createElement("input", {
-        onChange: this.handleLocationChange,
         id: "location",
+        onChange: this.handleLocationChange,
         value: this.state.location,
-        placeholder: "Local"
-      })));
+        placeholder: "Location"
+      })), _react.default.createElement("label", {
+        htmlFor: "animal"
+      }, "Animal", _react.default.createElement("select", {
+        id: "animal",
+        value: this.state.animal,
+        onChange: this.handleAnimalChange,
+        onBlur: this.handleAnimalChange
+      }, _react.default.createElement("option", null), _petfinderClient.ANIMALS.map(function (animal) {
+        return _react.default.createElement("option", {
+          key: animal,
+          value: animal
+        }, animal);
+      }))), _react.default.createElement("label", {
+        htmlFor: "breed"
+      }, "Breed", _react.default.createElement("select", {
+        disabled: !this.state.breeds.length,
+        id: "breed",
+        value: this.state.breed,
+        onChange: this.handleBreedChange,
+        onBlur: this.handleBreedChange
+      }, _react.default.createElement("option", null), this.state.breeds.map(function (breed) {
+        return _react.default.createElement("option", {
+          key: breed,
+          value: breed
+        }, breed);
+      }))), _react.default.createElement("button", null, "Submit")));
     }
   }]);
 
@@ -25408,7 +25484,7 @@ function (_React$Component) {
 
 var _default = SearchParams;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js"}],"App.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","petfinder-client":"../node_modules/petfinder-client/index.js"}],"App.js":[function(require,module,exports) {
 "use strict";
 
 var _react = _interopRequireDefault(require("react"));
@@ -25500,7 +25576,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50078" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55807" + '/');
 
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
