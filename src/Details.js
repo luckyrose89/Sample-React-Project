@@ -16,7 +16,7 @@ class Details extends React.Component {
 
     this.state = {
       loading: true,
-      showModal: true
+      showModal: false
     };
   }
   toggleModal() {
